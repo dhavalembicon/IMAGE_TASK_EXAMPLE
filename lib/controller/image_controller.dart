@@ -4,12 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ImageController extends GetxController {
   var isDownload = false.obs;
 
   capture(GlobalKey key) async {
     try {
+      Map<Permission, PermissionStatus> status = await [Permission.storage,].request();
+      final info = status[Permission.storage].toString();
+      //ignore: avoid_print
+      print('Permission:- $info');
       isDownload.value = true;
       RenderRepaintBoundary? boundary = key.currentContext?.findRenderObject() as RenderRepaintBoundary?;
       final image = await boundary!.toImage(pixelRatio: 1248);
